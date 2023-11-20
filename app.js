@@ -34,7 +34,7 @@ const convertDbObjecttoResponseDbObject = (dbObject) => {
 };
 app.get("/movies/", async (request, response) => {
   const getAllactors = `
-    SELECT * FROM movie`;
+    SELECT movie_name FROM movie`;
   const movieArray = await database.all(getAllactors);
   response.send(
     movieArray.map((eachplayer) =>
@@ -43,23 +43,22 @@ app.get("/movies/", async (request, response) => {
   );
 });
 app.get("/movies/:movieId/", async (request, response) => {
-  const { directorId, movieName, leadActor } = request.params;
+  const { movieId } = request.params;
   const getAllactors = `
-    SELECT * FROM movie WHERE movie_id='${movieId}';`;
-  const movieArray = await database.all(getAllactors);
+    SELECT * FROM movie WHERE movie_id=${movieId};`;
+  const movieArray = await database.get(getAllactors);
   response.send(convertDbObjecttoResponseDbObject(movieArray));
 });
 app.get("/directors/", async (request, response) => {
-  const { directorId, movieName, leadActor } = request.params;
   const getAllactors = `
-    SELECT * FROM movie;`;
+    SELECT director_id,director_name FROM director;`;
   const movieArray = await database.all(getAllactors);
   response.send(convertDbObjecttoResponseDbObject(movieArray));
 });
 app.get("/directors/:directorId/movies/", async (request, response) => {
-  const { movieName, directorId, leadActor } = request.params;
+  const { movieName } = request.params;
   const getAllactors = `
-    SELECT * FROM movie WHERE movie_id='${movieId}';`;
+    SELECT movie_name FROM director WHERE movie_id=${movieId};`;
   const movieArray = await database.all(getAllactors);
   response.send(convertDbObjecttoResponseDbObject(movieArray));
 });
