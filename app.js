@@ -34,7 +34,7 @@ const convertDbObjecttoResponseDbObject = (dbObject) => {
 };
 app.get("/movies/", async (request, response) => {
   const getAllactors = `
-    SELECT * FROM movies_data;`;
+    SELECT * FROM movie`;
   const movieArray = await database.all(getAllactors);
   response.send(
     movieArray.map((eachplayer) =>
@@ -43,47 +43,48 @@ app.get("/movies/", async (request, response) => {
   );
 });
 app.get("/movies/:movieId/", async (request, response) => {
-  const { movieId } = request.params;
+  const { directorId, movieName, leadActor } = request.params;
   const getAllactors = `
-    SELECT * FROM movie_data WHERE movie_id='${movieId};`;
+    SELECT * FROM movie WHERE movie_id='${movieId}';`;
   const movieArray = await database.all(getAllactors);
   response.send(convertDbObjecttoResponseDbObject(movieArray));
 });
 app.get("/directors/", async (request, response) => {
+  const { directorId, movieName, leadActor } = request.params;
   const getAllactors = `
-    SELECT * FROM movie_data ;`;
+    SELECT * FROM movie;`;
   const movieArray = await database.all(getAllactors);
   response.send(convertDbObjecttoResponseDbObject(movieArray));
 });
 app.get("/directors/:directorId/movies/", async (request, response) => {
-  const { movieName, directorId } = request.params;
+  const { movieName, directorId, leadActor } = request.params;
   const getAllactors = `
-    SELECT * FROM movie_data WHERE movie_id='${movieId};`;
+    SELECT * FROM movie WHERE movie_id='${movieId}';`;
   const movieArray = await database.all(getAllactors);
   response.send(convertDbObjecttoResponseDbObject(movieArray));
 });
 app.post("/movies/", async (request, response) => {
   const { directorId, movieName, leadActor } = request.body;
   const postAllactors = `
-    INSERT INTO movie_data(director_id,movie_name,lead_actor) VALUES ('${directorId}','${movieName}','${leadActor}')`;
+    INSERT INTO movie(director_id,movie_name,lead_actor) VALUES('${directorId}','${movieName}','${leadActor}')`;
   const movieArray = await database.run(postAllactors);
-  response.send("Actor Added to Moviedata");
+  response.send("Movie Successfully Added");
 });
 app.put("/movies/:movieId/", async (request, response) => {
   const { directorId, movieName, leadActor } = request.body;
 
   const putAllactors = `
-    UPDATE movie_data SET director_id='${directorId}',movie_name=${movieName},lead_actor='${leadActor}' WHERE director_id='${directorId}';`;
+    UPDATE movie SET director_id='${directorId}',movie_name='${movieName}',lead_actor='${leadActor}' WHERE director_id='${directorId}';`;
   const movieArray = await database.run(putAllactors);
-  response.send("Actor Details Updated");
+  response.send("Movie Details Updated");
 });
 app.delete("/movies/:movieId/", async (request, response) => {
   const { movieId } = request.params;
   const deleteAllactors = `
-    DELETE FROM movie_data WHERE movie_id='${movieId};';
+    DELETE FROM movie WHERE movie_id='${movieId}';
     `;
   const movieArray = await database.run(deleteAllactors);
-  response.send("Actor Removed");
+  response.send("Movie Removed");
 });
 
 module.exports = app;
