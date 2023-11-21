@@ -71,9 +71,9 @@ app.post("/movies/", async (request, response) => {
 });
 app.put("/movies/:movieId/", async (request, response) => {
   const { directorId, movieName, leadActor } = request.body;
-
+  const { movieId } = request.params;
   const putAllactors = `
-    UPDATE movie SET director_id='${directorId}',movie_name='${movieName}',lead_actor='${leadActor}' WHERE director_id='${directorId}';`;
+    UPDATE movie SET director_id='${directorId}',movie_name='${movieName}',lead_actor='${leadActor}' WHERE movie_id='${movieId}';`;
   const movieArray = await database.run(putAllactors);
   response.send("Movie Details Updated");
 });
