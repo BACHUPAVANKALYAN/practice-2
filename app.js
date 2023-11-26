@@ -56,9 +56,9 @@ app.get("/directors/", async (request, response) => {
   response.send(convertDbObjecttoResponseDbObject(movieArray));
 });
 app.get("/directors/:directorId/movies/", async (request, response) => {
-  const { movieName } = request.params;
+  const { directorId } = request.params;
   const getAllactors = `
-    SELECT movie_name FROM director WHERE movie_id=${movieId};`;
+    SELECT movie_name FROM movie WHERE director_id=${directorId};`;
   const movieArray = await database.all(getAllactors);
   response.send(convertDbObjecttoResponseDbObject(movieArray));
 });
